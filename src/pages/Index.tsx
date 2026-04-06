@@ -7,6 +7,7 @@ import InnovationSection from "@/components/InnovationSection";
 import AchievementsSection from "@/components/AchievementsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import { SectionDivider } from "@/components/ScrollAnimations";
 
 const Index = () => {
   return (
@@ -14,10 +15,15 @@ const Index = () => {
       <CustomCursor />
       <Navbar />
       <HeroSection />
+      <SectionDivider />
       <AboutSection />
+      <SectionDivider />
       <ProgramsSection />
+      <SectionDivider />
       <InnovationSection />
+      <SectionDivider />
       <AchievementsSection />
+      <SectionDivider />
       <ContactSection />
       <Footer />
     </div>
