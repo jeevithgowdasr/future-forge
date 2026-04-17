@@ -39,28 +39,34 @@ export default function HeroSection() {
         style={{ y: titleY, opacity: titleOpacity }}
       >
         <motion.div
-          initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-6 flex flex-col items-center"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-8 relative inline-block group"
         >
-          <img src="/college-logo.png" alt="MyCEM Logo" className="h-32 w-auto mb-8 drop-shadow-[0_0_15px_rgba(255,191,0,0.4)]" />
-          <span className="inline-block glass-panel px-4 py-2 text-xs font-medium tracking-[0.2em] uppercase text-primary mb-8">
-            The Grand Cultural & Technical Fest
+          {/* Pulsing glow behind the logo */}
+          <div className="absolute -inset-16 bg-primary/30 rounded-full blur-[100px] opacity-20 group-hover:opacity-60 transition-opacity duration-1000 animate-pulse"></div>
+          
+          <div className="relative w-56 h-56 md:w-96 md:h-96 rounded-full p-4 bg-card border-[3px] border-primary/40 shadow-[0_0_80px_rgba(34,211,238,0.3)] flex items-center justify-center overflow-hidden transform transition-transform duration-700 group-hover:scale-105">
+            <img 
+              src="/fest-logo.jpg" 
+              alt="Mysiri Sambrama 2026 Logo" 
+              className="w-full h-full object-contain mix-blend-lighten scale-[1.6]" 
+            />
+          </div>
+          <span className="block glass-panel px-8 py-3 text-xs font-black tracking-[0.4em] uppercase text-primary mx-auto w-fit mt-8 border-primary/30 shadow-neon-cyan">
+            Infinite Excellence
           </span>
         </motion.div>
 
         <motion.h1
-          initial={{ opacity: 0, y: 60, filter: "blur(10px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 1.2, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="font-display font-bold text-5xl sm:text-6xl md:text-8xl lg:text-9xl leading-[0.95] tracking-tight mb-6"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="font-display font-black text-6xl md:text-9xl leading-[0.8] tracking-tighter mb-8"
         >
-          <span className="text-foreground">MYSIRI</span>
-          <br />
+          MYSIRI <br />
           <span className="neon-text">SAMBRAMA</span>
-          <br />
-          <span className="text-foreground">2026</span>
         </motion.h1>
 
         <motion.p

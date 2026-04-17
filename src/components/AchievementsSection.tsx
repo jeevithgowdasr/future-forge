@@ -59,7 +59,7 @@ export default function SponsorsSection() {
           </h2>
         </ScrollReveal>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
           {stats.map((s, i) => (
             <ScrollReveal key={s.label} delay={i * 0.1}>
               <motion.div
@@ -72,6 +72,19 @@ export default function SponsorsSection() {
             </ScrollReveal>
           ))}
         </div>
+
+        <ScrollReveal>
+          <div className="text-center mb-12">
+            <h3 className="font-display text-2xl font-bold">Our Exclusive Partners</h3>
+          </div>
+          <div className="flex flex-wrap justify-center gap-12 items-center opacity-60 hover:opacity-100 transition-opacity">
+            {["MM Group", "Ad Vision", "Live Photography", "Chirayu"].map((sponsor) => (
+              <div key={sponsor} className="font-display text-xl md:text-2xl font-black tracking-tighter text-muted-foreground hover:text-primary transition-colors cursor-default">
+                {sponsor}
+              </div>
+            ))}
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

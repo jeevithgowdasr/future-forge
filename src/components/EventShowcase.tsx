@@ -226,6 +226,99 @@ const eventDetails = [
     ],
     studentCoords: "Contact Faculty Coordinators",
     highlights: ["For Boys", "Focus & Precision"]
+  },
+  {
+    id: "bike-stunt",
+    title: "Bike Stunt Show",
+    type: "Sports",
+    image: "/posters/bike-stunt.jpg",
+    description: "Hell Riderz presents the ultimate Bike Stunt Show. High-octane action and jaw-dropping stunts on the sports ground.",
+    date: "8th April 2026",
+    timings: "12:00 PM Onwards",
+    venue: "Sports Ground, MyCEM",
+    registration: "Event By: MM Group",
+    deadline: "N/A",
+    teamSize: "Spectacle",
+    coordinators: [
+      { name: "Hell Riderz Team", phone: "N/A" }
+    ],
+    studentCoords: "In association with Ad Vision & Live Photography",
+    highlights: ["Hell Riderz", "High-Octane Action"]
+  },
+  {
+    id: "stage-performance",
+    title: "Stage Performance Fest",
+    type: "Cultural",
+    image: "/posters/stage-performance.jpg",
+    description: "Inter-College Competitions: Dance Performance, Fashion Show, Ramp Walk, and Singing. The grandest stage of the year.",
+    date: "17th April 2026",
+    timings: "10:00 AM - 5:00 PM",
+    venue: "College Auditorium",
+    registration: "Inter-College Competition",
+    deadline: "17th April",
+    teamSize: "Solo/Group",
+    coordinators: [
+      { name: "Prof. Janaki Reddy D", phone: "984529877" },
+      { name: "Prof. Divyashree P", phone: "9164334785" }
+    ],
+    studentCoords: "Varshini C Gowda, Ramyashree Rao & Spandana H M",
+    highlights: ["Fashion Show", "Dance Battles", "Main Stage"]
+  },
+  {
+    id: "singing-competition",
+    title: "Singing Competition",
+    type: "Cultural",
+    image: "/posters/singing-competition.jpg",
+    description: "Inter-College Singing Competition. Let your voice shine on the grand stage of Mysiri Sambrama.",
+    date: "17th April 2026",
+    timings: "10:00 AM onwards",
+    venue: "Main Stage / Auditorium",
+    registration: "Fee: ₹50",
+    deadline: "17th April",
+    teamSize: "Individual",
+    coordinators: [
+      { name: "Kavya DC", phone: "7483614255" }
+    ],
+    studentCoords: "Harshitha (90367 93583)",
+    highlights: ["Inter-College", "Cash Prizes"]
+  },
+  {
+    id: "student-stalls",
+    title: "Student Stalls",
+    type: "Cultural",
+    image: "/posters/student-stalls.png",
+    description: "Explore a variety of unique stalls hosted by our very own students. Features include Handmade Crafts, Clothing & Accessories, Books & Plants, and a wide array of Snacks & Beverages.",
+    date: "18th April 2026",
+    timings: "Full Day",
+    venue: "College Campus",
+    registration: "For Students",
+    deadline: "18th April",
+    teamSize: "Stall Group",
+    coordinators: [
+      { name: "Manvitha M Patel", phone: "7349264044" },
+      { name: "R M Likhitha", phone: "9164497946" }
+    ],
+    studentCoords: "Contact Manvitha or Likhitha",
+    highlights: ["Handmade Crafts", "Student Entrepreneurship"]
+  },
+  {
+    id: "petsiri-fest",
+    title: "Petsiri Fest 2026",
+    type: "Cultural",
+    image: "/posters/petsiri-fest.png",
+    description: "A fun-filled day for our furry friends! Join the cute pet contests, enjoy fun games, and stand a chance to win paw-tastic prizes.",
+    date: "18th April 2026",
+    timings: "2:00 PM",
+    venue: "College Campus",
+    registration: "Open to All",
+    deadline: "18th April",
+    teamSize: "Individual Pet",
+    coordinators: [
+      { name: "Manvitha M Patel", phone: "7349264044" },
+      { name: "R M Likhitha", phone: "9164497946" }
+    ],
+    studentCoords: "Cute Pet contests & Fun Games",
+    highlights: ["Pet Contests", "Fun Games", "Win Prizes"]
   }
 ];
 

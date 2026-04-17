@@ -3,11 +3,11 @@ import { Mic, Zap, Music, PartyPopper } from "lucide-react";
 import { ScrollReveal, ParallaxLayer } from "./ScrollAnimations";
 
 const scheduleItems = [
-  { icon: Zap, title: "April 7: Sports Kickoff", time: "2:30 PM - 5:00 PM", desc: "Inter-Branch Volleyball and Women's Cricket Tournament kickoff at College Ground." },
+  { icon: Zap, title: "April 7-8: Action Begins", time: "12:00 PM Onwards", desc: "Sports tournaments kickoff on the 7th, followed by the high-octane Bike Stunt Show by Hell Riderz on the 8th." },
   { icon: Mic, title: "April 9-10: Indoor & Strength", time: "2:00 PM - 5:00 PM", desc: "Tug of War, Inter-Branch Chess, and the Boys' Carrom Competition across campus halls." },
-  { icon: PartyPopper, title: "April 11: MPL Season 5", time: "Full Day", desc: "The grand Interbranch Cricket Tournament (MPL) begins its season 5 journey." },
-  { icon: Music, title: "April 15-16: Culture & Talent", time: "9:00 AM - 6:00 PM", desc: "Hackathon, Debate, and Rangoli on the 15th, followed by Instrumental Music on the 16th." },
-  { icon: PartyPopper, title: "April 17: Tech Finale", time: "10:00 AM onwards", desc: "Tech Pictionary and Web Design Challenges bringing a close to the technical events." },
+  { icon: PartyPopper, title: "April 11-16: Main Events", time: "Full Days", desc: "MPL Cricket Season 5 starts on the 11th. Innovation, Art, and Music events fill the core festival days." },
+  { icon: Music, title: "April 17: Grand Finale", time: "10:00 AM onwards", desc: "Stage Performance Fest (Dance, Fashion), Singing, and Tech Challenges conclude the main competitions." },
+  { icon: PartyPopper, title: "April 18: Community & Stalls", time: "10:00 AM - 6:00 PM", desc: "A day for the community with Student Stalls on display and the fun Petsiri Fest 2026." },
 ];
 
 export default function ScheduleSection() {

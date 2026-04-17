@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { Button } from "./ui/button";
 
 const links = ["Events", "Lineup", "Schedule", "Sponsors", "Contact"];
 
@@ -20,12 +21,21 @@ export default function Navbar() {
       className="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-white/10 shadow-2xl backdrop-blur-3xl"
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
-        <button onClick={() => scrollTo("hero")} className="flex items-center gap-3 font-display font-black text-xl tracking-tighter hover:scale-105 transition-transform">
-          <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-full blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
-            <img src="/fest-logo.jpg" alt="Mysiri Logo" className="relative h-14 w-auto rounded-lg shadow-xl" />
+        <button onClick={() => scrollTo("hero")} className="flex items-center gap-4 group">
+          <div className="relative">
+            <motion.div 
+              whileHover={{ rotateY: 180, scale: 1.1 }}
+              transition={{ duration: 0.8 }}
+              className="relative z-10 w-14 h-14 rounded-full p-2 bg-card border border-primary/30 shadow-[0_0_20px_rgba(34,211,238,0.2)] flex items-center justify-center overflow-hidden"
+            >
+              <img src="/fest-logo.jpg" alt="Mysiri Logo" className="w-full h-full object-contain mix-blend-lighten scale-150" />
+            </motion.div>
+            <div className="absolute -inset-2 bg-primary/20 blur-xl opacity-0 group-hover:opacity-60 transition-opacity animate-pulse" />
           </div>
-          <span className="neon-text hidden sm:inline">MYSIRI</span>
+          <div className="flex flex-col items-start leading-none group">
+            <span className="font-display font-black text-2xl tracking-tighter text-foreground group-hover:text-primary transition-colors">MYSIRI</span>
+            <span className="text-[10px] uppercase tracking-[0.4em] text-muted-foreground font-black group-hover:text-foreground transition-colors">Sambrama 2026</span>
+          </div>
         </button>
 
         <div className="hidden md:flex items-center gap-10">
