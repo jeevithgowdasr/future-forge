@@ -4,7 +4,6 @@ import AboutSection from "@/components/AboutSection";
 import EventsSection from "@/components/ProgramsSection";
 import EventShowcase from "@/components/EventShowcase";
 import InnovationSection from "@/components/InnovationSection";
-import Sponsors from "@/components/Sponsors";
 import AchievementsSection from "@/components/AchievementsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
@@ -12,23 +11,24 @@ import { SectionDivider } from "@/components/ScrollAnimations";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-primary/30 selection:text-primary">
+    <div className="min-h-screen bg-background text-foreground selection:bg-primary/30 selection:text-primary overflow-x-hidden pt-20 md:pt-24 lg:pt-32 noise-bg">
       <Navbar />
       <HeroSection />
-      <SectionDivider />
-      <AboutSection />
-      <SectionDivider />
-      <EventsSection />
-      <SectionDivider />
-      <EventShowcase />
-      <SectionDivider />
-      <Sponsors />
-      <SectionDivider />
-      <InnovationSection />
-      <SectionDivider />
-      <AchievementsSection />
-      <SectionDivider />
-      <ContactSection />
+      
+      <div className="relative space-y-16 md:space-y-32">
+        <AboutSection />
+        <SectionDivider />
+        <EventsSection />
+        <SectionDivider />
+        <EventShowcase />
+        <SectionDivider />
+        <InnovationSection />
+        <SectionDivider />
+        <AchievementsSection />
+        <SectionDivider />
+        <ContactSection />
+      </div>
+      
       <Footer />
     </div>
   );

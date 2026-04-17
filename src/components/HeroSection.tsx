@@ -40,39 +40,36 @@ export default function HeroSection() {
         style={{ y: titleY, opacity: titleOpacity }}
       >
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0, scale: 0.5, rotate: -5 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
           className="mb-12 relative inline-block group"
         >
-          {/* Pulsing glow behind the logo */}
-          <div className="absolute -inset-24 bg-primary/20 rounded-full blur-[120px] opacity-20 group-hover:opacity-60 transition-opacity duration-1000 animate-pulse"></div>
+          {/* Enhanced pulsing glow */}
+          <div className="absolute -inset-32 bg-primary/20 rounded-full blur-[140px] opacity-20 group-hover:opacity-60 transition-opacity duration-1000 animate-pulse"></div>
+          <div className="absolute -inset-16 bg-accent/10 rounded-full blur-[80px] opacity-10 animate-[pulse_4s_infinite]"></div>
           
-          <div className="relative w-64 h-64 md:w-[28rem] md:h-[28rem] rounded-[3rem] p-6 bg-black/40 border-[2px] border-primary/20 shadow-[0_0_100px_rgba(212,175,55,0.2)] flex items-center justify-center overflow-hidden transform transition-all duration-1000 group-hover:scale-105 group-hover:border-primary/50">
+          <motion.div 
+            whileHover={{ scale: 1.02, rotate: 1 }}
+            className="relative w-[18rem] h-[18rem] md:w-[32rem] md:h-[32rem] flex items-center justify-center overflow-visible drop-shadow-[0_0_50px_rgba(212,175,55,0.3)] animate-float"
+          >
             <img 
-              src="/college-logo.png" 
-              alt="MYCEM College Logo" 
-              className="w-full h-full object-contain mix-blend-lighten scale-110" 
+              src="/fest-logo.jpg" 
+              alt="MYSIRI SAMBRAMA 2026 Logo" 
+              className="w-full h-full object-contain filter drop-shadow-2xl" 
             />
+          </motion.div>
+          
+          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-full flex flex-col items-center">
+             <motion.span 
+               initial={{ width: 0, opacity: 0 }}
+               animate={{ width: "auto", opacity: 1 }}
+               transition={{ delay: 1, duration: 1 }}
+               className="block glass-panel px-12 py-5 text-[12px] font-black tracking-[0.8em] uppercase text-primary border-primary/20 shadow-neon-glow-gold backdrop-blur-3xl whitespace-nowrap"
+             >
+              The Grand Cultural Odyssey
+            </motion.span>
           </div>
-          <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center">
-             <span className="block glass-panel px-10 py-4 text-[10px] font-black tracking-[0.6em] uppercase text-primary border-primary/20 shadow-neon-glow-gold backdrop-blur-3xl">
-              Infinite Excellence
-            </span>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col items-center"
-        >
-          <span className="text-primary text-xs md:text-sm font-black uppercase tracking-[1em] mb-4 opacity-70">Experience the Royal</span>
-          <h1 className="font-display font-black text-6xl md:text-[10rem] leading-[0.75] tracking-tighter mb-10 text-white flex flex-col items-center">
-            MYSIRI
-            <span className="neon-text italic">SAMBRAMA</span>
-          </h1>
         </motion.div>
 
         <motion.p

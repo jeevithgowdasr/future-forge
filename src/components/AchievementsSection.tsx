@@ -112,13 +112,10 @@ export default function SponsorsSection() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {partners.map((partner, index) => (
-              <motion.a
+              <motion.div
                 key={partner.name}
-                href={partner.link}
-                target="_blank"
-                rel="noopener noreferrer"
                 whileHover={{ y: -5 }}
-                className="glass-panel-hover rounded-3xl p-8 flex flex-col hover:border-primary/50 transition-all duration-500 group border-white/5"
+                className="glass-panel-hover rounded-3xl p-8 flex flex-col border-white/5 transition-all duration-500 group"
               >
                 <div className="flex-1">
                   <h4 className="font-display text-xl font-bold group-hover:text-primary transition-colors uppercase tracking-tight">
@@ -131,10 +128,7 @@ export default function SponsorsSection() {
                     {partner.desc}
                   </p>
                 </div>
-                <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between text-[9px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-primary transition-colors">
-                  Digital Portfolio <ExternalLink size={14} className="group-hover:translate-x-1 transition-transform" />
-                </div>
-              </motion.a>
+              </motion.div>
             ))}
           </div>
         </ScrollReveal>
