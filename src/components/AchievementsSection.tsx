@@ -1,5 +1,6 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
+import { ExternalLink } from "lucide-react";
 import { ScrollReveal } from "./ScrollAnimations";
 
 const stats = [
@@ -7,6 +8,33 @@ const stats = [
   { value: 30, suffix: "+", label: "Competitive Events" },
   { value: 100, suffix: "+", label: "Colleges Participating" },
   { value: 50, suffix: "+", label: "Event Sponsors" },
+];
+
+const partners = [
+  { 
+    name: "MM Group", 
+    role: "Production & Events", 
+    desc: "Premier event management and production group specializing in high-octane sports and entertainment spectacles.",
+    link: "https://www.justdial.com/Mysore/Event-Organisers/nct-10189334"
+  },
+  { 
+    name: "Ad Vision", 
+    role: "Creative Partner", 
+    desc: "Expert advertising agency providing branding, creative design, and large-scale printing solutions for mega festivals.",
+    link: "https://www.justdial.com/Mysore/Ad-Vision-Kr-Mohalla/0821P821STD2000571_BZDET"
+  },
+  { 
+    name: "Live Photography", 
+    role: "Media Partner", 
+    desc: "Saraswathipuram's leading studio capturing cinematic candid moments and professional event coverage.",
+    link: "https://www.justdial.com/Mysore/Live-Photography-Near-Fire-Station-Saraswathipuram/0821PX821-X140801115121-Y7C7_BZDET"
+  },
+  { 
+    name: "Chirayu Dance Institute", 
+    role: "Cultural Partner", 
+    desc: "Mysore's premier dance academy fostering folk, contemporary, and classical excellence since 2009.",
+    link: "https://mysuru.directory/listing/chirayu-dance-institute-siddarthanagar-mysuru/"
+  },
 ];
 
 function Counter({ target, suffix }: { target: number; suffix: string }) {
@@ -77,11 +105,31 @@ export default function SponsorsSection() {
           <div className="text-center mb-12">
             <h3 className="font-display text-2xl font-bold">Our Exclusive Partners</h3>
           </div>
-          <div className="flex flex-wrap justify-center gap-12 items-center opacity-60 hover:opacity-100 transition-opacity">
-            {["MM Group", "Ad Vision", "Live Photography", "Chirayu"].map((sponsor) => (
-              <div key={sponsor} className="font-display text-xl md:text-2xl font-black tracking-tighter text-muted-foreground hover:text-primary transition-colors cursor-default">
-                {sponsor}
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {partners.map((partner, index) => (
+              <motion.a
+                key={partner.name}
+                href={partner.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -5 }}
+                className="glass-panel rounded-2xl p-6 flex flex-col hover:border-primary/50 transition-colors group"
+              >
+                <div className="flex-1">
+                  <h4 className="font-display text-xl font-bold group-hover:text-primary transition-colors">
+                    {partner.name}
+                  </h4>
+                  <p className="text-primary text-[10px] font-black uppercase tracking-widest mb-3 mt-1 opacity-70">
+                    {partner.role}
+                  </p>
+                  <p className="text-muted-foreground text-xs leading-relaxed italic">
+                    "{partner.desc}"
+                  </p>
+                </div>
+                <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-[10px] font-black uppercase tracking-tighter text-muted-foreground group-hover:text-primary">
+                  View Profile <ExternalLink size={12} />
+                </div>
+              </motion.a>
             ))}
           </div>
         </ScrollReveal>
