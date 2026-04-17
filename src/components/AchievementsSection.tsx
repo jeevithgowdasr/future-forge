@@ -1,6 +1,6 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
-import { ExternalLink } from "lucide-react";
+import { Badge } from "./ui/badge";
 import { ScrollReveal } from "./ScrollAnimations";
 
 const stats = [
@@ -14,26 +14,22 @@ const partners = [
   { 
     name: "MM Group", 
     role: "Production & Events", 
-    desc: "Premier event management and production group specializing in high-octane sports and entertainment spectacles.",
-    link: "https://www.justdial.com/Mysore/Event-Organisers/nct-10189334"
+    desc: "Premier event management and production group specializing in high-octane sports and entertainment spectacles."
   },
   { 
     name: "Ad Vision", 
     role: "Creative Partner", 
-    desc: "Expert advertising agency providing branding, creative design, and large-scale printing solutions for mega festivals.",
-    link: "https://www.justdial.com/Mysore/Ad-Vision-Kr-Mohalla/0821P821STD2000571_BZDET"
+    desc: "Expert advertising agency providing branding, creative design, and large-scale printing solutions for mega festivals."
   },
   { 
     name: "Live Photography", 
     role: "Media Partner", 
-    desc: "Saraswathipuram's leading studio capturing cinematic candid moments and professional event coverage.",
-    link: "https://www.justdial.com/Mysore/Live-Photography-Near-Fire-Station-Saraswathipuram/0821PX821-X140801115121-Y7C7_BZDET"
+    desc: "Saraswathipuram's leading studio capturing cinematic candid moments and professional event coverage."
   },
   { 
     name: "Chirayu Dance Institute", 
     role: "Cultural Partner", 
-    desc: "Mysore's premier dance academy fostering folk, contemporary, and classical excellence since 2009.",
-    link: "https://mysuru.directory/listing/chirayu-dance-institute-siddarthanagar-mysuru/"
+    desc: "Mysore's premier dance academy fostering folk, contemporary, and classical excellence since 2009."
   },
 ];
 
@@ -63,7 +59,7 @@ function Counter({ target, suffix }: { target: number; suffix: string }) {
   );
 }
 
-export default function SponsorsSection() {
+export default function AchievementsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -112,23 +108,36 @@ export default function SponsorsSection() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {partners.map((partner, index) => (
-              <motion.div
-                key={partner.name}
-                whileHover={{ y: -5 }}
-                className="glass-panel-hover rounded-3xl p-8 flex flex-col border-white/5 transition-all duration-500 group"
-              >
-                <div className="flex-1">
-                  <h4 className="font-display text-xl font-bold group-hover:text-primary transition-colors uppercase tracking-tight">
-                    {partner.name}
-                  </h4>
-                  <Badge className="bg-primary/20 text-primary border-none mb-4 mt-2 uppercase tracking-[0.2em] text-[8px] font-black">
-                    {partner.role}
-                  </Badge>
-                  <p className="text-muted-foreground text-xs leading-relaxed font-medium">
-                    {partner.desc}
-                  </p>
-                </div>
-              </motion.div>
+              <ScrollReveal key={partner.name} delay={index * 0.1}>
+                <motion.div
+                  whileHover={{ 
+                    y: -10,
+                    scale: 1.02,
+                    boxShadow: "0 20px 40px rgba(212, 175, 55, 0.15)"
+                  }}
+                  className="glass-panel-hover rounded-[2.5rem] p-8 h-full flex flex-col border-white/5 transition-all duration-700 group relative overflow-hidden"
+                >
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-3xl -mr-16 -mt-16 group-hover:bg-primary/20 transition-colors" />
+                  
+                  <div className="flex-1 relative z-10">
+                    <Badge className="bg-primary/10 text-primary border-primary/20 mb-6 px-3 py-1 uppercase tracking-[0.2em] text-[8px] font-black">
+                      {partner.role}
+                    </Badge>
+                    <h4 className="font-display text-2xl font-black group-hover:text-primary transition-colors uppercase tracking-tight mb-4">
+                      {partner.name}
+                    </h4>
+                    <p className="text-muted-foreground text-[11px] leading-relaxed font-medium opacity-70 group-hover:opacity-100 transition-opacity">
+                      {partner.desc}
+                    </p>
+                  </div>
+                  
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    whileHover={{ width: "100%" }}
+                    className="h-1 bg-primary mt-8 rounded-full"
+                  />
+                </motion.div>
+              </ScrollReveal>
             ))}
           </div>
         </ScrollReveal>
