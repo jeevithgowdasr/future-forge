@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
-import { Lightbulb, Award, Cpu } from "lucide-react";
+import { Sparkles, FlaskConical, Users } from "lucide-react";
 import { ParallaxLayer, ScrollReveal, TextReveal } from "./ScrollAnimations";
 
 const cards = [
-  { icon: Lightbulb, title: "Innovation", desc: "Fostering creative thinking and groundbreaking research across all disciplines." },
-  { icon: Award, title: "Excellence", desc: "Committed to the highest academic standards and global benchmarks." },
-  { icon: Cpu, title: "Technology", desc: "State-of-the-art labs and infrastructure powering next-gen learning." },
+  { icon: Sparkles, title: "Cultural Heritage", desc: "Experience the vibrant traditions and artistic brilliance of our soil." },
+  { icon: FlaskConical, title: "Future Tech", desc: "Witness the next wave of engineering innovations and prototypes." },
+  { icon: Users, title: "Unity in Diversity", desc: "A platform where students from various backgrounds unite for excellence." },
 ];
 
 export default function AboutSection() {
@@ -21,12 +21,12 @@ export default function AboutSection() {
 
       <div className="max-w-6xl mx-auto relative z-10">
         <ScrollReveal className="text-center mb-16">
-          <span className="text-primary text-sm font-medium tracking-[0.2em] uppercase">About Us</span>
+          <span className="text-primary text-sm font-medium tracking-[0.2em] uppercase">The Event</span>
           <h2 className="font-display text-3xl md:text-5xl font-bold mt-4 mb-6">
-            Where <span className="neon-text">Vision</span> Meets Reality
+            The Spirit of <span className="neon-text">SAMBRAMA</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
-            <TextReveal text="Mysore College of Engineering and Management stands at the forefront of technical education, blending rigorous academics with hands-on innovation to produce industry-ready graduates who shape the future." />
+            <TextReveal text="MYSIRI SAMBRAMA 2026 is the flagship annual festival of Mysore College of Engineering and Management. It brings together the sharpest minds and the most soulful talents for two days of non-stop excitement, learning, and celebration." />
           </p>
         </ScrollReveal>
 

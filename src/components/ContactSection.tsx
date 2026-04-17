@@ -29,7 +29,7 @@ export default function ContactSection() {
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-6">
                 {[
-                  { Icon: MapPin, label: "Location", value: "Mysore, Karnataka, India" },
+                  { Icon: MapPin, label: "Location", value: "1072, T Narsipura Rd, near Big Banyan Tree, Chikkalli, Mysuru, Karnataka 570028" },
                   { Icon: Mail, label: "Email", value: "info@mcem.edu.in" },
                   { Icon: Phone, label: "Phone", value: "+91 821 000 0000" },
                 ].map((item, i) => (

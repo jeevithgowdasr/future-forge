@@ -3,10 +3,10 @@ import { useRef, useEffect, useState } from "react";
 import { ScrollReveal } from "./ScrollAnimations";
 
 const stats = [
-  { value: 5000, suffix: "+", label: "Students Enrolled" },
-  { value: 150, suffix: "+", label: "Faculty Members" },
-  { value: 95, suffix: "%", label: "Placement Rate" },
-  { value: 50, suffix: "+", label: "Research Papers" },
+  { value: 5000, suffix: "+", label: "Expected Footfall" },
+  { value: 30, suffix: "+", label: "Competitive Events" },
+  { value: 100, suffix: "+", label: "Colleges Participating" },
+  { value: 50, suffix: "+", label: "Event Sponsors" },
 ];
 
 function Counter({ target, suffix }: { target: number; suffix: string }) {
@@ -35,7 +35,7 @@ function Counter({ target, suffix }: { target: number; suffix: string }) {
   );
 }
 
-export default function AchievementsSection() {
+export default function SponsorsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -44,22 +44,18 @@ export default function AchievementsSection() {
   const bgY = useTransform(scrollYProgress, [0, 1], [60, -60]);
 
   return (
-    <section ref={sectionRef} id="achievements" className="section-padding relative overflow-hidden">
+    <section ref={sectionRef} id="sponsors" className="section-padding relative overflow-hidden">
       {/* Parallax decorative ring */}
       <motion.div
         style={{ y: bgY }}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-primary/5 pointer-events-none"
       />
-      <motion.div
-        style={{ y: useTransform(scrollYProgress, [0, 1], [40, -40]) }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full border border-accent/5 pointer-events-none"
-      />
-
+      
       <div className="max-w-6xl mx-auto relative z-10">
         <ScrollReveal className="text-center mb-16">
-          <span className="text-primary text-sm font-medium tracking-[0.2em] uppercase">Achievements</span>
+          <span className="text-primary text-sm font-medium tracking-[0.2em] uppercase">Fest Highlights</span>
           <h2 className="font-display text-3xl md:text-5xl font-bold mt-4">
-            Numbers That <span className="neon-text">Speak</span>
+            The <span className="neon-text">Scale</span> of Sambrama
           </h2>
         </ScrollReveal>
 

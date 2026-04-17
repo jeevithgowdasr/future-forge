@@ -42,10 +42,11 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-6"
+          className="mb-6 flex flex-col items-center"
         >
+          <img src="/college-logo.png" alt="MyCEM Logo" className="h-32 w-auto mb-8 drop-shadow-[0_0_15px_rgba(255,191,0,0.4)]" />
           <span className="inline-block glass-panel px-4 py-2 text-xs font-medium tracking-[0.2em] uppercase text-primary mb-8">
-            Est. Excellence in Engineering
+            The Grand Cultural & Technical Fest
           </span>
         </motion.div>
 
@@ -53,14 +54,13 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 60, filter: "blur(10px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ duration: 1.2, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="font-display font-bold text-4xl sm:text-5xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tight mb-6"
+          className="font-display font-bold text-5xl sm:text-6xl md:text-8xl lg:text-9xl leading-[0.95] tracking-tight mb-6"
         >
-          <span className="text-foreground">Mysore College of</span>
+          <span className="text-foreground">MYSIRI</span>
           <br />
-          <span className="neon-text">Engineering</span>
-          <span className="text-foreground"> &</span>
+          <span className="neon-text">SAMBRAMA</span>
           <br />
-          <span className="neon-text">Management</span>
+          <span className="text-foreground">2026</span>
         </motion.h1>
 
         <motion.p
@@ -69,7 +69,9 @@ export default function HeroSection() {
           transition={{ duration: 1, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light"
         >
-          Shaping Innovators of Tomorrow
+          Celebrate Engineering, Culture, and Innovation. 
+          <br />
+          Join us at MyCEM campus for a journey of excellence.
         </motion.p>
 
         <motion.div
@@ -79,18 +81,18 @@ export default function HeroSection() {
           className="flex flex-col sm:flex-row gap-4 justify-center"
         >
           <button
-            onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
+            onClick={() => document.getElementById("events")?.scrollIntoView({ behavior: "smooth" })}
             className="group glass-panel-hover px-8 py-4 rounded-full flex items-center justify-center gap-3 text-primary font-medium text-sm tracking-wide hover:bg-primary/10 transition-all"
           >
             <Compass size={18} />
-            Explore Campus
+            View Events
             <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </button>
           <button
-            onClick={() => document.getElementById("programs")?.scrollIntoView({ behavior: "smooth" })}
+            onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
             className="group px-8 py-4 rounded-full bg-primary text-primary-foreground font-medium text-sm tracking-wide hover:shadow-[0_0_30px_hsl(186_100%_50%/0.4)] transition-all"
           >
-            Discover Programs
+            Participate Now
             <ArrowRight size={16} className="inline ml-2 group-hover:translate-x-1 transition-transform" />
           </button>
         </motion.div>
