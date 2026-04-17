@@ -50,26 +50,38 @@ export default function HeroSection() {
           <div className="absolute -inset-16 bg-accent/10 rounded-full blur-[80px] opacity-10 animate-[pulse_4s_infinite]"></div>
           
           <motion.div 
-            whileHover={{ scale: 1.02, rotate: 1 }}
-            className="relative w-[18rem] h-[18rem] md:w-[32rem] md:h-[32rem] flex items-center justify-center overflow-visible drop-shadow-[0_0_50px_rgba(212,175,55,0.3)] animate-float"
+            whileHover={{ scale: 1.05, rotate: 2 }}
+            className="relative w-[18rem] h-[18rem] md:w-[32rem] md:h-[32rem] flex items-center justify-center animate-float"
           >
-            <img 
-              src="/fest-logo.jpg" 
-              alt="MYSIRI SAMBRAMA 2026 Logo" 
-              className="w-full h-full object-contain filter drop-shadow-2xl" 
-            />
+            {/* Circular Frame for Logo */}
+            <div className="absolute inset-2 md:inset-4 rounded-full border-4 border-primary/40 shadow-[0_0_80px_rgba(212,175,55,0.4)] bg-black/40 backdrop-blur-sm z-0"></div>
+            
+            <motion.div 
+              className="relative z-10 w-full h-full rounded-full overflow-hidden flex items-center justify-center p-8 md:p-12"
+            >
+              <img 
+                src="/fest-logo.jpg" 
+                alt="MYSIRI SAMBRAMA 2026" 
+                className="w-full h-full object-contain filter drop-shadow-2xl brightness-110" 
+              />
+            </motion.div>
+
+            <div className="absolute -bottom-14 left-1/2 -translate-x-1/2 w-full flex flex-col items-center z-20">
+              <motion.div 
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 1, duration: 1 }}
+                className="flex flex-col items-center gap-2"
+              >
+                <span className="block glass-panel px-12 py-5 text-[14px] font-black tracking-[0.6em] uppercase text-primary border-primary/30 shadow-neon-glow-gold backdrop-blur-3xl whitespace-nowrap">
+                  MYSIRI SAMBRAMA 2026
+                </span>
+                <span className="text-[9px] text-white/50 tracking-[1em] uppercase font-bold mt-2">
+                  The Grand Cultural Odyssey
+                </span>
+              </motion.div>
+            </div>
           </motion.div>
-          
-          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-full flex flex-col items-center">
-             <motion.span 
-               initial={{ width: 0, opacity: 0 }}
-               animate={{ width: "auto", opacity: 1 }}
-               transition={{ delay: 1, duration: 1 }}
-               className="block glass-panel px-12 py-5 text-[12px] font-black tracking-[0.8em] uppercase text-primary border-primary/20 shadow-neon-glow-gold backdrop-blur-3xl whitespace-nowrap"
-             >
-              The Grand Cultural Odyssey
-            </motion.span>
-          </div>
         </motion.div>
 
         <motion.p
