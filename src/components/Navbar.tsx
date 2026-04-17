@@ -21,35 +21,44 @@ export default function Navbar() {
       className="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-white/10 shadow-2xl backdrop-blur-3xl"
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
-        <button onClick={() => scrollTo("hero")} className="flex items-center gap-4 group">
-          <div className="relative">
+        <button onClick={() => scrollTo("hero")} className="flex items-center gap-3 md:gap-5 group max-w-[70%]">
+          <div className="relative shrink-0">
             <motion.div 
               whileHover={{ rotateY: 180, scale: 1.1 }}
               transition={{ duration: 0.8 }}
-              className="relative z-10 w-14 h-14 rounded-full p-2 bg-card border border-primary/30 shadow-[0_0_20px_rgba(34,211,238,0.2)] flex items-center justify-center overflow-hidden"
+              className="relative z-10 w-12 h-12 md:w-16 md:h-16 rounded-2xl p-1 bg-black/40 border border-primary/20 shadow-[0_0_20px_rgba(212,175,55,0.15)] flex items-center justify-center overflow-hidden"
             >
-              <img src="/fest-logo.jpg" alt="Mysiri Logo" className="w-full h-full object-contain mix-blend-lighten scale-150" />
+              <img 
+                src="/college-logo.png" 
+                alt="MYCEM Logo" 
+                className="w-full h-full object-contain mix-blend-lighten scale-110" 
+              />
             </motion.div>
-            <div className="absolute -inset-2 bg-primary/20 blur-xl opacity-0 group-hover:opacity-60 transition-opacity animate-pulse" />
+            <div className="absolute -inset-2 bg-primary/10 blur-xl opacity-0 group-hover:opacity-40 transition-opacity animate-pulse" />
           </div>
-          <div className="flex flex-col items-start leading-none group">
-            <span className="font-display font-black text-2xl tracking-tighter text-foreground group-hover:text-primary transition-colors">MYSIRI</span>
-            <span className="text-[10px] uppercase tracking-[0.4em] text-muted-foreground font-black group-hover:text-foreground transition-colors">Sambrama 2026</span>
+          <div className="flex flex-col items-start leading-[1.1] transition-transform duration-500 group-hover:translate-x-1">
+            <span className="font-display font-black text-xs md:text-sm tracking-widest text-primary/80 uppercase">MYSORE COLLEGE OF</span>
+            <span className="font-display font-black text-sm md:text-lg tracking-tighter text-foreground group-hover:text-primary transition-colors uppercase">ENGINEERING AND MANAGEMENT</span>
+            <div className="flex items-center gap-2 mt-1">
+              <span className="h-[1px] w-4 bg-primary/30" />
+              <span className="text-[9px] uppercase tracking-[0.3em] text-muted-foreground font-bold">MYSIRI SAMBRAMA 2026</span>
+            </div>
           </div>
         </button>
 
-        <div className="hidden md:flex items-center gap-10">
+        <div className="hidden lg:flex items-center gap-8">
           {links.map((l) => (
             <button
               key={l}
               onClick={() => scrollTo(l)}
-              className="text-xs uppercase tracking-[0.2em] text-muted-foreground hover:text-primary transition-all duration-300 font-bold hover:glow-sm hover:scale-110"
+              className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground hover:text-primary transition-all duration-500 font-black hover:scale-105 relative group/item"
             >
               {l}
+              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-primary transition-all duration-500 group-hover/item:w-full" />
             </button>
           ))}
-          <Button className="neon-glow-cyan h-9 px-6 text-xs font-black uppercase tracking-widest rounded-full">
-            Connect
+          <Button className="neon-glow-gold h-11 px-8 text-[10px] font-black uppercase tracking-[0.2em] rounded-xl bg-primary text-black hover:bg-white transition-all transform hover:-rotate-2">
+            Register
           </Button>
         </div>
 

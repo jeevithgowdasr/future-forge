@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Bormiolo:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,51 +6,48 @@
 
 @layer base {
   :root {
-    --background: 240 20% 6%;
-    --foreground: 210 40% 95%;
+    --background: 230 40% 4%;
+    --foreground: 45 30% 95%;
 
-    --card: 240 15% 10%;
-    --card-foreground: 210 40% 95%;
+    --card: 230 35% 7%;
+    --card-foreground: 45 30% 98%;
 
-    --popover: 240 15% 10%;
-    --popover-foreground: 210 40% 95%;
+    --popover: 230 35% 7%;
+    --popover-foreground: 45 30% 98%;
 
-    --primary: 186 100% 50%;
-    --primary-foreground: 240 20% 6%;
+    --primary: 43 70% 50%;
+    --primary-foreground: 230 40% 4%;
 
-    --secondary: 263 84% 66%;
+    --secondary: 350 80% 50%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 240 10% 16%;
-    --muted-foreground: 215 20% 55%;
+    --muted: 230 20% 12%;
+    --muted-foreground: 45 10% 65%;
 
-    --accent: 263 84% 66%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 43 70% 50%;
+    --accent-foreground: 45 30% 98%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 240 10% 18%;
-    --input: 240 10% 18%;
-    --ring: 186 100% 50%;
+    --border: 230 20% 15%;
+    --input: 230 20% 15%;
+    --ring: 43 70% 50%;
 
-    --radius: 0.75rem;
+    --radius: 1.25rem;
 
     /* Custom tokens */
-    --neon-cyan: 186 100% 50%;
-    --neon-purple: 263 84% 66%;
-    --neon-blue: 220 90% 56%;
-    --glass-bg: 240 15% 10%;
-    --glass-border: 240 10% 20%;
+    --gold: 43 70% 50%;
+    --crimson: 350 80% 50%;
+    --midnight: 230 40% 4%;
+    
+    --gradient-gold: linear-gradient(135deg, hsl(43 70% 50%), hsl(35 100% 60%));
+    --gradient-royal: linear-gradient(180deg, hsl(230 40% 4%) 0%, hsl(230 35% 8%) 100%);
+    --shadow-gold: 0 0 30px hsl(43 70% 50% / 0.2), 0 0 60px hsl(43 70% 50% / 0.1);
+    --shadow-royal: 0 20px 40px hsl(0 0% 0% / 0.6);
 
-    --gradient-neon: linear-gradient(135deg, hsl(186 100% 50%), hsl(263 84% 66%));
-    --gradient-hero: linear-gradient(180deg, hsl(240 20% 6%) 0%, hsl(240 25% 10%) 50%, hsl(240 20% 6%) 100%);
-    --shadow-neon-cyan: 0 0 20px hsl(186 100% 50% / 0.3), 0 0 60px hsl(186 100% 50% / 0.1);
-    --shadow-neon-purple: 0 0 20px hsl(263 84% 66% / 0.3), 0 0 60px hsl(263 84% 66% / 0.1);
-    --shadow-glass: 0 8px 32px hsl(0 0% 0% / 0.4);
-
-    --font-display: 'Space Grotesk', sans-serif;
-    --font-body: 'Inter', sans-serif;
+    --font-display: 'Plus Jakarta Sans', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
   }
 }
 
@@ -63,119 +60,77 @@
     @apply bg-background text-foreground;
     font-family: var(--font-body);
     overflow-x: hidden;
+    background-attachment: fixed;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
+    @apply tracking-tighter;
   }
 }
 
 @layer components {
   .glass-panel {
-    @apply bg-card/40 backdrop-blur-xl border border-border/50 rounded-xl;
-    box-shadow: var(--shadow-glass);
+    @apply bg-card/60 backdrop-blur-2xl border border-white/5 rounded-[2rem];
+    box-shadow: var(--shadow-royal);
   }
 
   .glass-panel-hover {
-    @apply glass-panel transition-all duration-500;
+    @apply glass-panel transition-all duration-700;
   }
 
   .glass-panel-hover:hover {
-    border-color: hsl(var(--neon-cyan) / 0.4);
-    box-shadow: var(--shadow-neon-cyan);
+    @apply border-primary/30 bg-card/80;
+    box-shadow: var(--shadow-gold);
+    transform: translateY(-4px);
   }
 
   .neon-text {
-    background: var(--gradient-neon);
+    background: var(--gradient-gold);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    @apply font-black;
   }
 
-  .neon-glow-cyan {
-    box-shadow: var(--shadow-neon-cyan);
-  }
-
-  .neon-glow-purple {
-    box-shadow: var(--shadow-neon-purple);
-  }
-
-  .glow-border {
-    position: relative;
-  }
-
-  .glow-border::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: var(--gradient-neon);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.5s;
-  }
-
-  .glow-border:hover::before {
-    opacity: 1;
+  .neon-glow-gold {
+    box-shadow: var(--shadow-gold);
   }
 
   .section-padding {
-    @apply px-6 md:px-12 lg:px-24 py-20 md:py-32;
+    @apply px-6 md:px-12 lg:px-32 py-24 md:py-40;
   }
 }
 
 @layer utilities {
-  .text-glow-cyan {
-    text-shadow: 0 0 10px hsl(186 100% 50% / 0.5), 0 0 40px hsl(186 100% 50% / 0.2);
+  .text-glow-gold {
+    text-shadow: 0 0 15px hsl(43 70% 50% / 0.4), 0 0 30px hsl(43 70% 50% / 0.1);
   }
-
-  .text-glow-purple {
-    text-shadow: 0 0 10px hsl(263 84% 66% / 0.5), 0 0 40px hsl(263 84% 66% / 0.2);
-  }
-}
-
-/* Custom cursor */
-.custom-cursor {
-  width: 20px;
-  height: 20px;
-  border: 2px solid hsl(186 100% 50%);
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 9999;
-  transition: transform 0.15s ease-out, opacity 0.15s;
-  mix-blend-mode: difference;
-}
-
-.custom-cursor-dot {
-  width: 6px;
-  height: 6px;
-  background: hsl(186 100% 50%);
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 9999;
-  transition: transform 0.08s ease-out;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(240 20% 6%);
+  background: hsl(230 40% 2%);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(186 100% 50% / 0.3);
-  border-radius: 3px;
+  background: hsl(43 70% 50% / 0.2);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(186 100% 50% / 0.5);
+  background: hsl(43 70% 50% / 0.4);
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(43 70% 50% / 0.3);
+}
+

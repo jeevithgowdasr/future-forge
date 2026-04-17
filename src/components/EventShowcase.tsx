@@ -1,11 +1,48 @@
-import { useState } from "react";
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { Calendar, MapPin, Users, Phone, Award, Info } from "lucide-react";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
+import { 
+  Calendar, MapPin, Users, Phone, Award, Info, 
+  ChevronRight, ChevronLeft, Download, CheckCircle2,
+  Trash2, X, ClipboardList, PenTool
+} from "lucide-react";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger, DialogHeader } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { ScrollReveal } from "./ScrollAnimations";
 
+// --- Registration Logic ---
+const STORAGE_KEY = "MYSIRI_REGISTRATIONS_2026";
+
+interface Registration {
+  id: string;
+  eventId: string;
+  eventTitle: string;
+  name: string;
+  college: string;
+  email: string;
+  phone: string;
+  timestamp: string;
+}
+
+const getRegistrations = (): Registration[] => {
+  const data = localStorage.getItem(STORAGE_KEY);
+  return data ? JSON.parse(data) : [];
+};
+
+const saveRegistration = (reg: Omit<Registration, "id" | "timestamp">) => {
+  const existing = getRegistrations();
+  const newReg = {
+    ...reg,
+    id: Math.random().toString(36).substr(2, 9),
+    timestamp: new Date().toISOString()
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...existing, newReg]));
+  return newReg;
+};
+
+// --- Event Data ---
 const eventDetails = [
   {
     id: "tech-pictionary",
@@ -19,12 +56,8 @@ const eventDetails = [
     registration: "No Entry Fees",
     deadline: "13th April 2026",
     teamSize: "4 members",
-    coordinators: [
-      { name: "Prof. Anusha C K", phone: "9632794541" },
-      { name: "Prof. Harshika U", phone: "9141633607" }
-    ],
-    studentCoords: "Shreya M M & Sneha M M (AI&ML)",
-    highlights: ["Draw. Guess. Win!", "Inter-departmental"]
+    coordinators: [{ name: "Prof. Anusha C K", phone: "9632794541" }],
+    studentCoords: "Shreya M M & Sneha M M (AI&ML)"
   },
   {
     id: "web-design",
@@ -38,11 +71,8 @@ const eventDetails = [
     registration: "No Entry Fee",
     deadline: "13th April 2026",
     teamSize: "2 per team",
-    coordinators: [
-      { name: "Prof. Anjali", phone: "7483760914" }
-    ],
-    studentCoords: "Nityashree & Bhavatarini",
-    highlights: ["90 Min Duration", "Bring your own laptop"]
+    coordinators: [{ name: "Prof. Anjali", phone: "7483760914" }],
+    studentCoords: "Nityashree & Bhavatarini"
   },
   {
     id: "hackathon",
@@ -56,11 +86,8 @@ const eventDetails = [
     registration: "Free Entry",
     deadline: "10th April 2026",
     teamSize: "As per rules",
-    coordinators: [
-      { name: "Prof. Harsha Kumar H S", phone: "9964811559" }
-    ],
-    studentCoords: "Jeevith Gowda S R",
-    highlights: ["6 Hours Non-Stop", "Intra-College"]
+    coordinators: [{ name: "Prof. Harsha Kumar H S", phone: "9964811559" }],
+    studentCoords: "Jeevith Gowda S R"
   },
   {
     id: "volleyball",
@@ -69,35 +96,12 @@ const eventDetails = [
     image: "/posters/volleyball.jpg",
     description: "Serve, Spike, Win! The ultimate inter-branch volleyball showdown.",
     date: "7th April 2026",
-    timings: "2:30 PM - 5:00 PM",
+    timings: "2:30 PM",
     venue: "College Volleyball Court",
     registration: "Free Entry",
-    deadline: "N/A",
     teamSize: "Branch Team",
-    coordinators: [
-      { name: "Prajwal SV", phone: "9480291240" }
-    ],
-    studentCoords: "Akash & Chinmay",
-    highlights: ["Inter-Branch", "Serve • Spike • Win"]
-  },
-  {
-    id: "debate",
-    title: "Debate Competition",
-    type: "Literary",
-    image: "/posters/debate.png",
-    description: "Will AI replace human jobs? Voice your opinion in this high-stakes debate.",
-    date: "15th April 2026",
-    timings: "10:30 AM",
-    venue: "MyCEM Campus",
-    registration: "Free Entry",
-    deadline: "Scan QR to register",
-    teamSize: "Individual/Team",
-    coordinators: [
-      { name: "Prof. Yashwanth raj D", phone: "6366287448" },
-      { name: "Prof. Santhosh B R", phone: "8884917430" }
-    ],
-    studentCoords: "Contact Coordinators",
-    highlights: ["Hot AI Topic", "Public Speaking"]
+    coordinators: [{ name: "Prajwal SV", phone: "9480291240" }],
+    studentCoords: "Akash & Chinmay"
   },
   {
     id: "mpl-cricket",
@@ -106,515 +110,385 @@ const eventDetails = [
     image: "/posters/mpl-cricket.jpg",
     description: "MPL Season 5 Interbranch Cricket Tournament. The biggest cricketing event of the year.",
     date: "Starts 11th April 2026",
-    timings: "Full Day",
     venue: "College Ground",
     registration: "Free Entry",
-    deadline: "7th April 2026",
     teamSize: "Branch Team",
-    coordinators: [
-      { name: "Chethan M U", phone: "9743349231" }
-    ],
-    studentCoords: "Akash [CIVIL] & Sachin [CSE]",
-    highlights: ["Season 5", "Interbranch Tournament"]
-  },
-  {
-    id: "womens-cricket",
-    title: "Women's Cricket",
-    type: "Sports",
-    image: "/posters/womens-cricket.jpg",
-    description: "Women's Cricket Tournament exclusively for girls. Showcase your cricketing prowess.",
-    date: "7th April 2026",
-    timings: "2:30 PM - 5:00 PM",
-    venue: "College Ground",
-    registration: "No Entry Fee",
-    deadline: "As per schedule",
-    teamSize: "Girls Team",
-    coordinators: [
-      { name: "Siraj Ahmed", phone: "9036117441" }
-    ],
-    studentCoords: "N/A",
-    highlights: ["Exclusively for Girls", "Inter-Department"]
-  },
-  {
-    id: "tug-of-war",
-    title: "Tug of War",
-    type: "Sports",
-    image: "/posters/tug-of-war.jpg",
-    description: "The ultimate test of strength and team spirit. Join the Tug of War competitions.",
-    date: "9th April 2026",
-    timings: "2:30 PM - 5:00 PM",
-    venue: "College Ground",
-    registration: "No Entry Fee",
-    deadline: "As per schedule",
-    teamSize: "Strength of 8-10",
-    coordinators: [
-      { name: "Kavya DC", phone: "7483614255" },
-      { name: "Harshika", phone: "9141633607" }
-    ],
-    studentCoords: "Contact Coordinators",
-    highlights: ["Test of Strength", "Team Spirit"]
-  },
-  {
-    id: "chess",
-    title: "Inter-Branch Chess",
-    type: "Sports",
-    image: "/posters/chess.jpg",
-    description: "Inter-Branch Chess Tournament. Think, Strategy, and Win the board.",
-    date: "9th April 2026",
-    timings: "Full Day",
-    venue: "College Chess Hall",
-    registration: "Free Entry",
-    deadline: "As per schedule",
-    teamSize: "Individual",
-    coordinators: [
-      { name: "Prajwal K M", phone: "7204163692" }
-    ],
-    studentCoords: "Think • Strategy • Win",
-    highlights: ["Board Battle", "Strategy focused"]
-  },
-  {
-    id: "rangoli",
-    title: "Rangoli Competition",
-    type: "Cultural",
-    image: "/posters/rangoli.jpg",
-    description: "Bring colors to life in this 1-hour Rangoli competition. Free registration.",
-    date: "15th April 2026",
-    timings: "1 Hour (TBA)",
-    venue: "MyCEM Campus",
-    registration: "Free Registration",
-    deadline: "15th April",
-    teamSize: "Individual/Team of 2",
-    coordinators: [
-      { name: "Nisarga P", phone: "9148472075" }
-    ],
-    studentCoords: "Nisarga P",
-    highlights: ["1 Hour Time Limit", "Color Art"]
-  },
-  {
-    id: "instrumental-music",
-    title: "Instrumental Music",
-    type: "Cultural",
-    image: "/posters/instrumental-music.jpg",
-    description: "Unleash your musical passion. Perform live on stage and win exciting prizes in the Instrumental Music Competition.",
-    date: "16th April 2026",
-    timings: "TBA",
-    venue: "MyCEM College Open Stage",
-    registration: "Open to all students",
-    deadline: "16th April",
-    teamSize: "Individual",
-    coordinators: [
-      { name: "Lavanya V", phone: "8073603113" }
-    ],
-    studentCoords: "Harshitha K P & Brunda M",
-    highlights: ["Live Performance", "Open to all students"]
-  },
-  {
-    id: "carrom",
-    title: "Inter-Branch Carrom",
-    type: "Sports",
-    image: "/posters/carrom.jpg",
-    description: "Inter-Branch Carrom Competition for Boys. Test your focus and precision on the board.",
-    date: "Starts 10th April 2026",
-    timings: "2:00 PM - 4:30 PM",
-    venue: "College Campus",
-    registration: "FREE",
-    deadline: "10th April",
-    teamSize: "Boys Only",
-    coordinators: [
-      { name: "Prof. Rajesh S", phone: "8722582222" },
-      { name: "Prof. Jaswanth M", phone: "9986731169" }
-    ],
-    studentCoords: "Contact Faculty Coordinators",
-    highlights: ["For Boys", "Focus & Precision"]
+    coordinators: [{ name: "Chethan M U", phone: "9743349231" }],
+    studentCoords: "Akash [CIVIL] & Sachin [CSE]"
   },
   {
     id: "bike-stunt",
     title: "Bike Stunt Show",
     type: "Sports",
     image: "/posters/bike-stunt.jpg",
-    description: "Hell Riderz presents the ultimate Bike Stunt Show. High-octane action and jaw-dropping stunts on the sports ground.",
+    description: "Hell Riderz presents the ultimate Bike Stunt Show. High-octane action and jaw-dropping stunts.",
     date: "8th April 2026",
     timings: "12:00 PM Onwards",
     venue: "Sports Ground, MyCEM",
     registration: "Event By: MM Group",
-    deadline: "N/A",
     teamSize: "Spectacle",
-    coordinators: [
-      { name: "Hell Riderz Team", phone: "N/A" }
-    ],
-    studentCoords: "In association with Ad Vision & Live Photography",
-    highlights: ["Hell Riderz", "High-Octane Action"]
+    coordinators: [{ name: "Hell Riderz Team", phone: "N/A" }],
+    studentCoords: "Hell Riderz Stunt Team"
   },
   {
     id: "stage-performance",
-    title: "Stage Performance Fest",
+    title: "State Fest",
     type: "Cultural",
     image: "/posters/stage-performance.jpg",
-    description: "Inter-College Competitions: Dance Performance, Fashion Show, Ramp Walk, and Singing. The grandest stage of the year.",
+    description: "Inter-College Competitions: Dance, Fashion Show, Ramp Walk, and Singing.",
     date: "17th April 2026",
     timings: "10:00 AM - 5:00 PM",
     venue: "College Auditorium",
-    registration: "Inter-College Competition",
-    deadline: "17th April",
+    registration: "Inter-College",
     teamSize: "Solo/Group",
-    coordinators: [
-      { name: "Prof. Janaki Reddy D", phone: "984529877" },
-      { name: "Prof. Divyashree P", phone: "9164334785" }
-    ],
-    studentCoords: "Varshini C Gowda, Ramyashree Rao & Spandana H M",
-    highlights: ["Fashion Show", "Dance Battles", "Main Stage"]
-  },
-  {
-    id: "singing-competition",
-    title: "Singing Competition",
-    type: "Cultural",
-    image: "/posters/singing-competition.jpg",
-    description: "Inter-College Singing Competition. Let your voice shine on the grand stage of Mysiri Sambrama.",
-    date: "17th April 2026",
-    timings: "10:00 AM onwards",
-    venue: "Main Stage / Auditorium",
-    registration: "Fee: ₹50",
-    deadline: "17th April",
-    teamSize: "Individual",
-    coordinators: [
-      { name: "Kavya DC", phone: "7483614255" }
-    ],
-    studentCoords: "Harshitha (90367 93583)",
-    highlights: ["Inter-College", "Cash Prizes"]
-  },
-  {
-    id: "student-stalls",
-    title: "Student Stalls",
-    type: "Cultural",
-    image: "/posters/student-stalls.png",
-    description: "Explore a variety of unique stalls hosted by our very own students. Features include Handmade Crafts, Clothing & Accessories, Books & Plants, and a wide array of Snacks & Beverages.",
-    date: "18th April 2026",
-    timings: "Full Day",
-    venue: "College Campus",
-    registration: "For Students",
-    deadline: "18th April",
-    teamSize: "Stall Group",
-    coordinators: [
-      { name: "Manvitha M Patel", phone: "7349264044" },
-      { name: "R M Likhitha", phone: "9164497946" }
-    ],
-    studentCoords: "Contact Manvitha or Likhitha",
-    highlights: ["Handmade Crafts", "Student Entrepreneurship"]
+    coordinators: [{ name: "Prof. Janaki Reddy D", phone: "984529877" }],
+    studentCoords: "Varshini C Gowda"
   },
   {
     id: "petsiri-fest",
     title: "Petsiri Fest 2026",
     type: "Cultural",
     image: "/posters/petsiri-fest.png",
-    description: "A fun-filled day for our furry friends! Join the cute pet contests, enjoy fun games, and stand a chance to win paw-tastic prizes.",
+    description: "A fun-filled day for our furry friends! Join the cute pet contests.",
     date: "18th April 2026",
     timings: "2:00 PM",
     venue: "College Campus",
     registration: "Open to All",
-    deadline: "18th April",
     teamSize: "Individual Pet",
-    coordinators: [
-      { name: "Manvitha M Patel", phone: "7349264044" },
-      { name: "R M Likhitha", phone: "9164497946" }
-    ],
-    studentCoords: "Cute Pet contests & Fun Games",
-    highlights: ["Pet Contests", "Fun Games", "Win Prizes"]
+    coordinators: [{ name: "Manvitha M Patel", phone: "7349264044" }],
+    studentCoords: "Pet Parade & Games"
   }
 ];
 
-function EventCard({ event }: { event: (typeof eventDetails)[0] }) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+function RegistrationForm({ event, onComplete }: { event: typeof eventDetails[0], onComplete: () => void }) {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    college: "",
+    email: "",
+    phone: ""
+  });
 
-  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
-  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    x.set(xPct);
-    y.set(yPct);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    // Simulate network delay
+    await new Promise(r => setTimeout(r, 1500));
+    
+    saveRegistration({
+      eventId: event.id,
+      eventTitle: event.title,
+      ...formData
+    });
+    
+    setLoading(false);
+    setSuccess(true);
+    setTimeout(() => {
+      onComplete();
+    }, 2000);
   };
 
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
+  if (success) {
+    return (
+      <div className="flex flex-col items-center justify-center p-12 text-center">
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mb-6"
+        >
+          <CheckCircle2 size={40} className="text-primary" />
+        </motion.div>
+        <h3 className="text-2xl font-black text-white uppercase mb-2">Registration Secured!</h3>
+        <p className="text-muted-foreground">Your entry has been recorded in the system.</p>
+      </div>
+    );
+  }
 
-  const shineBg = useTransform(
-    [mouseXSpring, mouseYSpring],
-    ([mx, my]) => `radial-gradient(400px circle at ${((mx as number) + 0.5) * 100}% ${((my as number) + 0.5) * 100}%, rgba(34, 211, 238, 0.2), transparent)`
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6 pt-4">
+      <div className="grid gap-4">
+        <div className="space-y-2">
+          <Label className="text-[10px] uppercase tracking-[0.2em] font-black text-primary/70">Full Name</Label>
+          <Input 
+            required
+            className="bg-white/5 border-white/10 rounded-xl h-12 focus:border-primary/50 transition-all font-medium"
+            placeholder="Enter your name"
+            value={formData.name}
+            onChange={e => setFormData({...formData, name: e.target.value})}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label className="text-[10px] uppercase tracking-[0.2em] font-black text-primary/70">College / Institution</Label>
+          <Input 
+            required
+            className="bg-white/5 border-white/10 rounded-xl h-12 focus:border-primary/50 transition-all font-medium"
+            placeholder="Your college name"
+            value={formData.college}
+            onChange={e => setFormData({...formData, college: e.target.value})}
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-[10px] uppercase tracking-[0.2em] font-black text-primary/70">Email Address</Label>
+            <Input 
+              type="email"
+              required
+              className="bg-white/5 border-white/10 rounded-xl h-12 focus:border-primary/50 transition-all font-medium"
+              placeholder="email@example.com"
+              value={formData.email}
+              onChange={e => setFormData({...formData, email: e.target.value})}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label className="text-[10px] uppercase tracking-[0.2em] font-black text-primary/70">Phone Number</Label>
+            <Input 
+              required
+              className="bg-white/5 border-white/10 rounded-xl h-12 focus:border-primary/50 transition-all font-medium"
+              placeholder="+91..."
+              value={formData.phone}
+              onChange={e => setFormData({...formData, phone: e.target.value})}
+            />
+          </div>
+        </div>
+      </div>
+      <Button 
+        type="submit" 
+        disabled={loading}
+        className="w-full h-14 bg-primary text-black font-black uppercase tracking-[0.2em] rounded-xl hover:bg-white transition-all transform hover:scale-[1.02]"
+      >
+        {loading ? "Processing..." : "Confirm My Entry"}
+      </Button>
+    </form>
   );
+}
+
+function AdminPanel() {
+  const [data, setData] = useState<Registration[]>([]);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (open) setData(getRegistrations());
+  }, [open]);
+
+  const clearData = () => {
+    if (confirm("Delete all registration records?")) {
+      localStorage.removeItem(STORAGE_KEY);
+      setData([]);
+    }
+  };
+
+  const exportJSON = () => {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "registrations_2026.json";
+    a.click();
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline" className="fixed bottom-6 right-6 z-[100] gap-3 bg-black/80 backdrop-blur-xl border-primary/20 text-primary font-black uppercase text-[10px] tracking-widest rounded-full px-6 h-14 shadow-2xl hover:bg-primary hover:text-black hover:border-transparent transition-all">
+          <ClipboardList size={18} />
+          Registrar Dashboard
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-4xl bg-black/95 border-white/10 rounded-[2.5rem] p-0 overflow-hidden backdrop-blur-3xl">
+        <div className="p-8 border-b border-white/10 flex justify-between items-center bg-white/[0.02]">
+          <div>
+            <h2 className="text-3xl font-black text-white uppercase tracking-tighter">Event Databases</h2>
+            <p className="text-primary text-[10px] font-bold uppercase tracking-[0.3em] mt-1">Real-time Registration Records</p>
+          </div>
+          <div className="flex gap-4">
+            <Button onClick={exportJSON} variant="outline" className="gap-2 border-primary/20 text-primary hover:bg-primary hover:text-black">
+              <Download size={16} /> Export JSON
+            </Button>
+            <Button onClick={clearData} variant="outline" className="gap-2 border-red-500/20 text-red-500 hover:bg-red-500 hover:text-white">
+              <Trash2 size={16} /> Clear All
+            </Button>
+          </div>
+        </div>
+        <div className="p-8 max-h-[60vh] overflow-y-auto custom-scrollbar">
+          {data.length === 0 ? (
+            <div className="text-center py-20 opacity-50">No registrations found yet.</div>
+          ) : (
+            <div className="grid gap-4">
+              {data.map((reg) => (
+                <div key={reg.id} className="p-5 rounded-2xl bg-white/5 border border-white/10 flex justify-between items-center group hover:border-primary/30 transition-all">
+                  <div>
+                    <div className="flex items-center gap-3 mb-1">
+                      <span className="text-xs font-black uppercase text-primary">{reg.eventTitle}</span>
+                      <span className="w-1 h-1 rounded-full bg-white/20" />
+                      <span className="text-[10px] text-muted-foreground uppercase">{new Date(reg.timestamp).toLocaleString()}</span>
+                    </div>
+                    <div className="text-base font-bold text-white mb-1 uppercase tracking-tight">{reg.name}</div>
+                    <div className="text-[10px] text-muted-foreground font-medium uppercase tracking-widest">{reg.college}</div>
+                  </div>
+                  <div className="text-right flex flex-col items-end gap-2">
+                    <div className="text-xs font-mono text-primary/80">{reg.email}</div>
+                    <div className="text-xs font-mono text-primary/80">{reg.phone}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+// --- Modified Event Card & Slider ---
+function EventCard({ event, index }: { event: typeof eventDetails[0], index: number }) {
+  const [open, setOpen] = useState(false);
 
   return (
     <motion.div
-      layout
-      initial={{ opacity: 0, scale: 0.9, y: 20 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      transition={{ duration: 0.5 }}
-      style={{ 
-        rotateX, 
-        rotateY, 
-        transformStyle: "preserve-3d" 
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="relative group cursor-pointer h-full"
+      initial={{ opacity: 0, x: 100 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      transition={{ delay: index * 0.1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      className="relative shrink-0 w-[24rem] md:w-[28rem] h-[36rem] md:h-[42rem] group"
     >
-      <Dialog>
-        <DialogTrigger asChild>
-          <div className="relative glass-panel overflow-hidden rounded-[2.5rem] border-white/[0.05] hover:border-primary/50 transition-all duration-700 bg-white/[0.01] backdrop-blur-xl h-full shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:shadow-[0_40px_80px_rgba(34,211,238,0.15)]">
-            <div style={{ transform: "translateZ(75px)", transformStyle: "preserve-3d" }} className="h-full">
-              <div className="aspect-[3/4.5] overflow-hidden relative">
-                <img 
-                  src={event.image} 
-                  alt={event.title}
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                />
-                
-                <motion.div 
-                  style={{ background: shineBg }}
-                  className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                />
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90" />
-              </div>
-              
-              <div 
-                style={{ transform: "translateZ(60px)" }}
-                className="absolute bottom-0 left-0 right-0 p-8 pt-20"
-              >
-                <div className="flex flex-wrap gap-2 mb-5">
-                  <Badge className="bg-primary/20 text-primary border-primary/30 backdrop-blur-md px-4 py-1 text-[10px] font-black uppercase tracking-widest">
-                    {event.type}
-                  </Badge>
-                </div>
-                
-                <h3 className="text-3xl font-black mb-4 tracking-[-0.05em] group-hover:text-primary transition-colors leading-[0.85] uppercase">
-                  {event.title}
-                </h3>
-                
-                <div className="flex items-center text-[10px] font-black text-muted-foreground gap-4 group-hover:text-white transition-colors tracking-[0.2em] uppercase">
-                  <div className="flex items-center gap-2">
-                    <Calendar size={14} className="text-primary" />
-                    <span>{event.date}</span>
-                  </div>
-                  <div className="w-1 h-1 rounded-full bg-primary/40" />
-                  <span>{event.venue.split(',')[0]}</span>
-                </div>
-              </div>
-
-              <div 
-                style={{ transform: "translateZ(120px)" }}
-                className="absolute top-8 right-8 opacity-0 group-hover:opacity-100 transition-all duration-700 -rotate-12 group-hover:rotate-0"
-              >
-                <div className="w-14 h-14 rounded-2xl bg-primary shadow-[0_0_30px_rgba(34,211,238,0.6)] flex items-center justify-center text-black">
-                  <Info size={28} />
-                </div>
-              </div>
-            </div>
+      <div className="absolute inset-0 bg-primary/20 rounded-[3rem] blur-3xl opacity-0 group-hover:opacity-30 transition-opacity duration-1000 -z-10" />
+      
+      <div className="relative h-full w-full rounded-[3rem] overflow-hidden border border-white/10 group-hover:border-primary/50 transition-all duration-700 bg-zinc-950/50 backdrop-blur-md">
+        <img 
+          src={event.image} 
+          alt={event.title} 
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 group-hover:rotate-1 opacity-70 group-hover:opacity-100"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent p-10 flex flex-col justify-end">
+          <Badge className="w-fit mb-6 bg-primary/20 text-primary border-primary/30 backdrop-blur-xl px-4 py-1.5 text-[10px] font-black uppercase tracking-widest">
+            {event.type}
+          </Badge>
+          <h3 className="text-5xl font-black text-white leading-none tracking-tighter mb-4 uppercase group-hover:text-primary transition-colors">
+            {event.title.split(' ').map((word, i) => (
+              <span key={i} className="block">{word}</span>
+            ))}
+          </h3>
+          <div className="flex items-center gap-6 text-[10px] font-black text-white/50 mb-8 uppercase tracking-[0.2em]">
+            <span className="flex items-center gap-2"><Calendar size={14} className="text-primary" /> {event.date}</span>
+            <span className="flex items-center gap-2"><MapPin size={14} className="text-primary" /> {event.venue.split(',')[0]}</span>
           </div>
-        </DialogTrigger>
-        
-        <DialogContent className="max-w-5xl p-0 border-white/10 bg-black/90 backdrop-blur-[50px] overflow-hidden rounded-[3rem]">
-          <div className="grid md:grid-cols-2 h-full max-h-[95vh]">
-            <div className="relative h-[45vh] md:h-full bg-zinc-950 group/preview flex items-center justify-center p-8">
-              <motion.img 
-                initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
-                animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                src={event.image} 
-                alt={event.title}
-                className="max-w-full max-h-full object-contain rounded-3xl shadow-[0_40px_100px_rgba(0,0,0,0.8)]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-purple-500/10 opacity-30 pointer-events-none" />
-            </div>
-
-            <div className="p-8 md:p-14 overflow-y-auto custom-scrollbar flex flex-col">
-              <div className="flex-1">
-                <div className="flex items-center gap-4 mb-8">
-                  <Badge className="px-5 py-2 text-xs font-black uppercase tracking-[0.2em] bg-primary text-black border-none ring-4 ring-primary/20">
-                    {event.type}
-                  </Badge>
-                  <div className="h-px flex-1 bg-gradient-to-r from-white/20 to-transparent" />
+          
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <button className="w-full h-16 rounded-2xl bg-white/5 backdrop-blur-3xl border border-white/10 flex items-center justify-between px-8 text-white font-black uppercase text-xs tracking-widest group/btn hover:bg-primary hover:text-black hover:border-transparent transition-all overflow-hidden relative">
+                <span className="relative z-10 transition-transform group-hover/btn:translate-x-2">Secure Your Slot</span>
+                <ChevronRight size={20} className="relative z-10 transition-transform group-hover/btn:translate-x-1" />
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500" />
+              </button>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl p-0 border-white/10 bg-black/95 backdrop-blur-[50px] overflow-hidden rounded-[3rem]">
+              <div className="grid md:grid-cols-2 h-full max-h-[90vh]">
+                <div className="relative p-10 bg-zinc-950 hidden md:flex items-center justify-center">
+                  <motion.img 
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    src={event.image} 
+                    className="w-full h-full object-contain rounded-2xl shadow-2xl"
+                  />
                 </div>
-
-                <DialogTitle className="text-5xl md:text-6xl font-black tracking-[-0.05em] mb-8 leading-[0.8] uppercase">
-                  {event.title}
-                </DialogTitle>
-                
-                <div className="bg-white/[0.03] p-7 rounded-[2rem] mb-10 border border-white/5 italic text-muted-foreground leading-relaxed text-sm md:text-base border-l-primary border-l-4">
-                  "{event.description}"
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 mb-10">
-                  <div className="space-y-8">
-                    <div className="flex items-start gap-5">
-                      <div className="w-14 h-14 rounded-3xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20 shadow-[inset_0_0_20px_rgba(34,211,238,0.1)]">
-                        <Calendar size={24} />
+                <div className="p-10 md:p-14 overflow-y-auto custom-scrollbar">
+                  <Badge className="bg-primary/20 text-primary border-primary/30 mb-6 uppercase tracking-widest px-4 font-black">Registration Portal</Badge>
+                  <DialogTitle className="text-4xl md:text-5xl font-black text-white leading-none tracking-tighter mb-6 uppercase italic">
+                    {event.title}
+                  </DialogTitle>
+                  <p className="text-muted-foreground text-sm font-medium leading-relaxed mb-8 opacity-80">{event.description}</p>
+                  
+                  <div className="space-y-6 mb-10">
+                    <div className="flex justify-between items-center p-4 rounded-2xl bg-white/5 border border-white/10 group-hover:border-primary/20">
+                      <div className="flex items-center gap-4">
+                        <Calendar size={20} className="text-primary" />
+                        <div>
+                          <div className="text-[10px] font-black uppercase tracking-widest text-white/40">Event Date</div>
+                          <div className="text-sm font-bold text-white uppercase">{event.date}</div>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-black mb-2 opacity-50">Event Schedule</p>
-                        <p className="text-xl font-black leading-none">{event.date}</p>
-                        <p className="text-sm text-primary font-bold mt-2 uppercase tracking-widest">{event.timings}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-5">
-                      <div className="w-14 h-14 rounded-3xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20 shadow-[inset_0_0_20px_rgba(34,211,238,0.1)]">
-                        <MapPin size={24} />
-                      </div>
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-black mb-2 opacity-50">Battle Ground</p>
-                        <p className="text-xl font-black leading-tight uppercase">{event.venue}</p>
+                      <div className="text-right">
+                        <div className="text-[10px] font-black uppercase tracking-widest text-white/40">Timings</div>
+                        <div className="text-sm font-bold text-primary">{event.timings || "TBA"}</div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="space-y-8">
-                    <div className="flex items-start gap-5">
-                      <div className="w-14 h-14 rounded-3xl bg-white/[0.03] flex items-center justify-center text-white/50 border border-white/10 shadow-inner">
-                        <Users size={24} />
-                      </div>
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-black mb-2 opacity-50">Combat Format</p>
-                        <p className="text-xl font-black leading-none uppercase">{event.teamSize}</p>
-                        <p className="text-[11px] text-yellow-500 font-black mt-2 uppercase tracking-tighter bg-yellow-500/10 px-2 py-0.5 rounded inline-block">
-                          Deadline: {event.deadline}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-5">
-                      <div className="w-14 h-14 rounded-3xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20 shadow-[inset_0_0_20px_rgba(34,211,238,0.1)]">
-                        <Award size={24} />
-                      </div>
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-black mb-2 opacity-50">Entry Token</p>
-                        <p className="text-xl font-black text-primary underline decoration-2 underline-offset-4 uppercase">{event.registration}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-6 bg-white/[0.02] p-8 rounded-[2.5rem] border border-white/5 relative overflow-hidden group/coords">
-                  <div className="absolute top-0 right-0 w-40 h-40 bg-primary/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 transition-opacity duration-1000 group-hover/coords:opacity-100 opacity-50"></div>
-                  <h4 className="font-black text-xl flex items-center gap-4 tracking-[-0.05em] uppercase italic text-white/90">
-                    <div className="w-2 h-8 bg-primary rounded-full"></div>
-                    Event Command Center
-                  </h4>
-                  <div className="grid grid-cols-1 gap-5 relative z-10">
-                    {event.coordinators.map((c) => (
-                      <div key={c.phone} className="flex justify-between items-center group/coord p-1">
-                        <span className="text-muted-foreground font-black tracking-tight text-sm uppercase opacity-70 group-hover/coord:opacity-100 transition-opacity">{c.name}</span>
-                        <a 
-                          href={`tel:${c.phone}`} 
-                          className="px-6 py-3 rounded-2xl bg-white/[0.03] text-primary text-xs font-bold border border-white/5 group-hover/coord:border-primary/50 group-hover/coord:bg-primary/20 transition-all tracking-[0.2em]"
-                        >
-                          {c.phone}
-                        </a>
-                      </div>
-                    ))}
-                    <div className="mt-4 p-6 rounded-[1.5rem] bg-primary/[0.03] border border-primary/10 backdrop-blur-md">
-                      <p className="text-[9px] font-black uppercase tracking-[0.4em] text-primary mb-3">Ground Operations</p>
-                      <p className="text-sm font-black leading-relaxed italic text-white/90 uppercase tracking-tight">{event.studentCoords}</p>
-                    </div>
-                  </div>
+                  <RegistrationForm event={event} onComplete={() => setOpen(false)} />
                 </div>
               </div>
-
-              <div className="mt-14">
-                <Button className="w-full h-24 text-3xl font-black uppercase tracking-[0.3em] group bg-primary hover:bg-primary/90 text-black shadow-[0_0_60px_rgba(34,211,238,0.5)] active:scale-[0.97] transition-all rounded-[2rem] relative overflow-hidden">
-                  <span className="relative z-10">Sign Up Now</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                  <motion.span 
-                    animate={{ x: [0, 15, 0] }}
-                    transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-                    className="ml-6 relative z-10"
-                  >
-                    →
-                  </motion.span>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </div>
     </motion.div>
   );
 }
 
-const categories = ["All", "Technical", "Innovation", "Sports", "Literary", "Cultural"];
-
 export default function EventShowcase() {
-  const [filter, setFilter] = useState("All");
-
-  const filteredEvents = filter === "All" 
-    ? eventDetails 
-    : eventDetails.filter(e => e.type === filter);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollXProgress } = useScroll({ container: containerRef });
+  const scaleX = useSpring(scrollXProgress, { stiffness: 100, damping: 30 });
 
   return (
-    <section id="lineup" className="section-padding relative overflow-visible bg-black">
-      {/* Background visual flair */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[150px] pointer-events-none opacity-50"></div>
-      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none opacity-50"></div>
+    <section id="events" className="relative py-32 md:py-48 overflow-hidden bg-black">
+      {/* Background Ambience */}
+      <div className="absolute top-0 right-0 w-[80rem] h-[80rem] bg-primary/10 rounded-full blur-[160px] opacity-20 pointer-events-none -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-[60rem] h-[60rem] bg-indigo-500/10 rounded-full blur-[140px] opacity-20 pointer-events-none translate-y-1/2 -translate-x-1/2" />
 
-      <div className="max-w-7xl mx-auto px-8 relative z-10">
-        <ScrollReveal className="text-center mb-24">
-          <Badge variant="outline" className="mb-8 px-8 py-3 border-primary/30 text-primary font-black uppercase tracking-[0.5em] bg-primary/5 rounded-full shadow-[0_0_20px_rgba(34,211,238,0.1)]">
-            Main Arena 2026
-          </Badge>
-          <h2 className="font-display text-7xl md:text-9xl font-black mb-10 tracking-[-0.06em] uppercase leading-[0.8]">
-            THE <span className="neon-text italic">SAMBRAMA</span><br /><span className="text-transparent border-t-zinc-800 [-webkit-text-stroke:1px_rgba(255,255,255,0.1)]">EXPERIENCE</span>
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-xl md:text-2xl font-medium leading-relaxed tracking-tight opacity-80">
-            Witness the fusion of technology and tradition. Register for the most prestigious events in the region.
-          </p>
-
-          <div className="flex flex-wrap justify-center gap-6 mt-20">
-            {categories.map((cat) => (
-              <Button
-                key={cat}
-                variant={filter === cat ? "default" : "outline"}
-                onClick={() => setFilter(cat)}
-                className={`px-12 py-9 rounded-[2rem] text-sm font-black uppercase tracking-[0.3em] transition-all duration-700 relative overflow-hidden group/btn ${
-                  filter === cat 
-                    ? "bg-primary text-black shadow-[0_0_40px_rgba(34,211,238,0.4)] -translate-y-3" 
-                    : "hover:border-primary/50 text-muted-foreground border-white/5 bg-white/[0.02] backdrop-blur-md"
-                }`}
-              >
-                <span className="relative z-10">{cat}</span>
-                {filter === cat && (
-                  <motion.div 
-                    layoutId="activeFilter"
-                    className="absolute inset-0 bg-primary"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-              </Button>
-            ))}
+      <div className="max-w-[100rem] mx-auto px-6 relative z-10">
+        <ScrollReveal className="px-6 mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-10">
+          <div className="max-w-3xl">
+            <Badge variant="outline" className="mb-8 px-8 py-3 border-primary/30 text-primary font-black uppercase tracking-[0.5em] bg-primary/5 rounded-[1.5rem] shadow-[0_0_30px_rgba(212,175,55,0.1)]">
+              Phase One: Event Selection
+            </Badge>
+            <h2 className="font-display text-7xl md:text-9xl font-black mb-10 tracking-[-0.08em] uppercase leading-[0.75] italic">
+              ARENA <span className="neon-text not-italic">ELITE</span>
+            </h2>
+            <p className="text-muted-foreground text-xl md:text-2xl font-medium leading-relaxed max-w-2xl">
+              Immerse yourself in our premium lineup. <br />
+              <span className="text-white italic">Select your challenge and secure your legacy.</span>
+            </p>
+          </div>
+          <div className="flex gap-4 mb-2">
+            <div className="text-right hidden md:block">
+              <div className="text-[10px] font-black uppercase tracking-[0.5em] text-primary/40 mb-2">Navigation Control</div>
+              <div className="flex gap-1">
+                <div className="w-12 h-1 bg-primary/20 rounded-full overflow-hidden">
+                   <motion.div className="h-full bg-primary" style={{ scaleX, transformOrigin: "left" }} />
+                </div>
+              </div>
+            </div>
           </div>
         </ScrollReveal>
 
-        <motion.div 
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-20"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredEvents.map((event) => (
-              <EventCard key={event.id} event={event} />
+        {/* Horizontal Slider Area */}
+        <div className="relative group/slider">
+          <motion.div 
+            ref={containerRef}
+            className="flex gap-10 md:gap-14 overflow-x-auto pb-24 pt-4 px-6 no-scrollbar cursor-grab active:cursor-grabbing snap-x snap-mandatory"
+            whileTap={{ cursor: "grabbing" }}
+          >
+            {eventDetails.map((event, i) => (
+              <EventCard key={event.id} event={event} index={i} />
             ))}
-          </AnimatePresence>
-        </motion.div>
+            
+            {/* End Spacer */}
+            <div className="shrink-0 w-40" />
+          </motion.div>
+
+          {/* Draggable Hint */}
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none opacity-0 group-hover/slider:opacity-100 transition-opacity duration-700">
+            <div className="flex items-center gap-4 bg-black/60 backdrop-blur-2xl p-6 rounded-l-[3rem] border border-white/10 border-r-0">
+              <span className="text-white font-black text-[10px] uppercase tracking-[0.4em] rotate-180 [writing-mode:vertical-lr]">Slide for More</span>
+              <ChevronRight size={32} className="text-primary animate-bounce-horizontal" />
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Local Admin Access */}
+      <AdminPanel />
     </section>
   );
 }

@@ -81,29 +81,34 @@ export default function SponsorsSection() {
       
       <div className="max-w-6xl mx-auto relative z-10">
         <ScrollReveal className="text-center mb-16">
-          <span className="text-primary text-sm font-medium tracking-[0.2em] uppercase">Fest Highlights</span>
-          <h2 className="font-display text-3xl md:text-5xl font-bold mt-4">
-            The <span className="neon-text">Scale</span> of Sambrama
+          <Badge variant="outline" className="mb-6 px-6 py-2 border-primary/30 text-primary font-black uppercase tracking-[0.3em]">
+            Fest Magnitude
+          </Badge>
+          <h2 className="font-display text-4xl md:text-6xl font-black mt-4 uppercase tracking-tighter">
+            THE <span className="neon-text italic">SCALE</span> OF SAMBRAMA
           </h2>
         </ScrollReveal>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-32">
           {stats.map((s, i) => (
             <ScrollReveal key={s.label} delay={i * 0.1}>
               <motion.div
-                whileHover={{ scale: 1.05, transition: { duration: 0.3 } }}
-                className="glass-panel rounded-2xl p-8 text-center"
+                whileHover={{ y: -5, transition: { duration: 0.3 } }}
+                className="bg-white/[0.02] border border-white/5 backdrop-blur-3xl rounded-[2.5rem] p-10 text-center hover:border-primary/30 transition-all duration-500"
               >
-                <Counter target={s.value} suffix={s.suffix} />
-                <p className="text-muted-foreground text-sm mt-3 font-medium">{s.label}</p>
+                <div className="mb-2">
+                  <Counter target={s.value} suffix={s.suffix} />
+                </div>
+                <p className="text-white font-black uppercase tracking-[0.2em] text-[10px] opacity-50">{s.label}</p>
               </motion.div>
             </ScrollReveal>
           ))}
         </div>
 
         <ScrollReveal>
-          <div className="text-center mb-12">
-            <h3 className="font-display text-2xl font-bold">Our Exclusive Partners</h3>
+          <div className="text-center mb-16">
+            <h3 className="font-display text-3xl font-black uppercase tracking-tight">Production & Media <span className="text-primary">Cohorts</span></h3>
+            <p className="text-muted-foreground mt-4 font-medium italic">Collaborating with regional specialists for unmatched event quality.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {partners.map((partner, index) => (
@@ -113,21 +118,21 @@ export default function SponsorsSection() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ y: -5 }}
-                className="glass-panel rounded-2xl p-6 flex flex-col hover:border-primary/50 transition-colors group"
+                className="glass-panel-hover rounded-3xl p-8 flex flex-col hover:border-primary/50 transition-all duration-500 group border-white/5"
               >
                 <div className="flex-1">
-                  <h4 className="font-display text-xl font-bold group-hover:text-primary transition-colors">
+                  <h4 className="font-display text-xl font-bold group-hover:text-primary transition-colors uppercase tracking-tight">
                     {partner.name}
                   </h4>
-                  <p className="text-primary text-[10px] font-black uppercase tracking-widest mb-3 mt-1 opacity-70">
+                  <Badge className="bg-primary/20 text-primary border-none mb-4 mt-2 uppercase tracking-[0.2em] text-[8px] font-black">
                     {partner.role}
-                  </p>
-                  <p className="text-muted-foreground text-xs leading-relaxed italic">
-                    "{partner.desc}"
+                  </Badge>
+                  <p className="text-muted-foreground text-xs leading-relaxed font-medium">
+                    {partner.desc}
                   </p>
                 </div>
-                <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-[10px] font-black uppercase tracking-tighter text-muted-foreground group-hover:text-primary">
-                  View Profile <ExternalLink size={12} />
+                <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between text-[9px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-primary transition-colors">
+                  Digital Portfolio <ExternalLink size={14} className="group-hover:translate-x-1 transition-transform" />
                 </div>
               </motion.a>
             ))}
