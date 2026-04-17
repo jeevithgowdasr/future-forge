@@ -57,12 +57,12 @@ export default function HeroSection() {
             <div className="absolute inset-2 md:inset-4 rounded-full border-4 border-primary/40 shadow-[0_0_80px_rgba(212,175,55,0.4)] bg-black/40 backdrop-blur-sm z-0"></div>
             
             <motion.div 
-              className="relative z-10 w-full h-full rounded-full overflow-hidden flex items-center justify-center p-8 md:p-12"
+              className="relative z-10 w-full h-full rounded-full overflow-hidden flex items-center justify-center p-0"
             >
               <img 
                 src="/fest-logo.jpg" 
-                alt="MYSIRI SAMBRAMA 2026" 
-                className="w-full h-full object-contain filter drop-shadow-2xl brightness-110" 
+                alt="MYSIRI SAMBRAMA 2026 Official Logo" 
+                className="w-full h-full object-cover filter drop-shadow-2xl brightness-110" 
               />
             </motion.div>
 
